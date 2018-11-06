@@ -50,7 +50,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
 
 - [ ]	1. If you don't already have one, [apply for an account on Quest](https://www.it.northwestern.edu/secure/forms/research/allocation-request.html)
 - [ ]	2. [Request access to the Genomic Compute Cluster on Quest](https://kb.northwestern.edu/page.php?id=78602) 
-- [ ]	3. [Log in to Quest](http://www.it.northwestern.edu/research/user-services/quest/logon.html)
+- [ ]	3. [Log in to Quest](https://kb.northwestern.edu/page.php?id=70706)
 - [ ]	4. In this protocol, we will run an example analysis with chromosome X data of Homo sapiens. (Ref: [Nature Protocol 2016](https://www.nature.com/articles/nprot.2016.095)) 
     - All necessary data you need are available in the following directory: _**/QuestDownloadPath/**_
       -	`'samples'` directory contains paired-end RNA-seq reads for 6 samples, 3 male and 3 female subjects from YRI (Yoruba from Ibadan, Nigeria) population. 
