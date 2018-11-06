@@ -3,7 +3,7 @@
 
 ### Table of Contents
 - [Introduction to RNA-seq](#introduction-to-RNA-seq)
-### 2. Set up environment on High Performance Computing and the Genomic Compute Cluster 
+- [Set up environment on the Genomic Compute Cluster on Quest](#set-up-environment-on-the-genomic-compute-cluster-on-quest)
 ### 3. Quality Check/ Alignment/ Estimate transcript abundances of RNA-seq reads
 ### 4. Expression and Differential Expression analysis
 ### 5. Visualization of the results
@@ -46,7 +46,7 @@ Before you start, you have to consider the **experiment design**:
 
 
 ___
-### 2. Set up environment on High Performance Computing and the Genomic Compute Cluster 
+## Set up environment on the Genomic Compute Cluster on Quest
 
 If you would like to perform RNA-seq on Quest, you need to first do the followings:
 
