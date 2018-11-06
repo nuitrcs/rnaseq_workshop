@@ -1,5 +1,5 @@
 # Study gene expression using RNA-seq analysis on Quest
-*Yoonie Joo created these workshop materials on behalf of Research Computing for the Genomics Community at Northwestern.*
+*Thanks to Yoonie Joo for creating these workshop materials on behalf of Research Computing for the Genomics Community at Northwestern.*
 
 - [Introduction to RNA-seq](#introduction-to-RNA-seq)
 - [Set up environment on the Genomic Compute Cluster on Quest](#set-up-environment-on-the-genomic-compute-cluster-on-quest)
