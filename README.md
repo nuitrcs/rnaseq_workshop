@@ -52,7 +52,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
 2. [Request access to the Genomic Compute Cluster on Quest](https://kb.northwestern.edu/page.php?id=78602) 
 3. [Log in to Quest](https://kb.northwestern.edu/page.php?id=70706)
 4. In this protocol, we will run an example analysis with chromosome X data of Homo sapiens. (Ref: [Nature Protocol 2016](https://www.nature.com/articles/nprot.2016.095)) 
-    - All necessary data you need are available in the following directory: _**/QuestDownloadPath/**_
+    - All necessary data you need are available in the following directory on Quest: /projects/genomicsshare/RNAseq_workshop
       -	`'samples'` directory contains paired-end RNA-seq reads for 6 samples, 3 male and 3 female subjects from YRI (Yoruba from Ibadan, Nigeria) population. 
       -	`‘indexes’` directory contains the indexes for chromosome X for HISAT2. 
       -	`‘genome’` directory contains the sequence of human chromosome X (GrCH38 build 81)
@@ -60,11 +60,10 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
       -	`‘mergelist.txt’` and ‘geuvadis_phenodata.csv’ are exemplary scripts that you might want to write yourself in a text editor. 
       -	Since it is paired-end reads, each sample has two files: all sequence is in compressed 'fastq' format
         -	(cf) Our analysis only contains the genome of chromosome X, but if someone is interested in the full data sets, these files are ~25 times larger and you can find them [here](ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol)
-5. Create a working directory for the analysis and copy the data to your directory: 
+5. Move to your home directory and copy the workshop directory into it: 
 ```bash
-	mkdir /home/YOUR_NETID/RNAseq_workshop		 
-	cd /home/YOUR_NETID/RNAseq_workshop
-	cp -R /projects/b1042/RCS/RNAseq/* .	
+	cd 		 
+	cp -R /projects/genomicsshare/RNAseq_workshop .	
 ```
 
 #### Software setup/installation:
