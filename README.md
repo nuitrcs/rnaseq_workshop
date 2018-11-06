@@ -2,7 +2,7 @@
 *Yoonie Joo created these workshop materials on behalf of Research Computing for the Genomics Community at Northwestern.*
 
 ### Table of Contents
-- [Introduction to RNAseq](#introduction-to-RNAseq)
+- [Introduction to RNA-seq](#introduction-to-RNA-seq)
 ### 2. Set up environment on High Performance Computing and the Genomic Compute Cluster 
 ### 3. Quality Check/ Alignment/ Estimate transcript abundances of RNA-seq reads
 ### 4. Expression and Differential Expression analysis
@@ -11,7 +11,7 @@
 
 ___
 
-## Introduction to RNAseq 
+## Introduction to RNA-seq 
 
 There are several sequencing analysis methods available based on the **goal of your experiment**:
 *	_**RNA-seq**_ : _co-expression networks, differentially expressed genes_ 
