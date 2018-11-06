@@ -11,7 +11,7 @@
 
 ___
 
-### 1. Introduction to RNAseq 
+## Introduction to RNAseq 
 
 There are several sequencing analysis methods available based on the **goal of your experiment**:
 *	_**RNA-seq**_ : _co-expression networks, differentially expressed genes_ 
