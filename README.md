@@ -4,7 +4,7 @@
 ### Table of Contents
 - [Introduction to RNA-seq](#introduction-to-RNA-seq)
 - [Set up environment on the Genomic Compute Cluster on Quest](#set-up-environment-on-the-genomic-compute-cluster-on-quest)
-- [Quality Check, Alignment, Estimate transcript abundances of RNA-seq reads](#Quality Check, Alignment, Estimate transcript abundances of RNA-seq reads)
+- [Quality Check, Alignment, Estimate transcript abundances of RNA-seq reads](#quality check, alignment, estimate transcript abundances of rna-seq reads)
 ### 4. Expression and Differential Expression analysis
 ### 5. Visualization of the results
 #### * Appendix. Reference-free expression estimation (Kallisto) 
