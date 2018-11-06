@@ -48,7 +48,7 @@ ___
 
 If you would like to perform RNA-seq on Quest, you need to first do the followings:
 
-- [ ]	1. Get an account on Quest
+- [ ]	1. [If you don't already have one, apply for an account on Quest](https://www.it.northwestern.edu/secure/forms/research/allocation-request.html)
 - [ ]	2. Request access to the Genomic Cluster (project directory: b1042) on Quest [[link]](https://kb.northwestern.edu/page.php?id=78602) 
 - [ ]	3. Log in to Quest [[link]](http://www.it.northwestern.edu/research/user-services/quest/logon.html)
 - [ ]	4. In this protocol, we will run an example analysis with chromosome X data of Homo sapiens. (Ref: [Nature Protocol 2016](https://www.nature.com/articles/nprot.2016.095)) 
