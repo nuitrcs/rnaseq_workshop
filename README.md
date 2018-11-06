@@ -2,7 +2,7 @@
 *Thanks to Yoonie Joo for creating these workshop materials on behalf of Research Computing for the Genomics Community at Northwestern.*
 
 - [Introduction to RNA-seq](#introduction-to-RNA-seq)
-- [Set up environment on the Genomic Compute Cluster on Quest](#set-up-environment-on-the-genomic-compute-cluster-on-quest)
+- [Set up your environment on the Genomic Compute Cluster on Quest](#set-up-your-environment-on-the-genomic-compute-cluster-on-quest)
 - [Quality Check - Alignment - Estimate transcript abundances of RNA-seq reads](#quality-check---alignment---estimate-transcript-abundances-of-rna-seq-reads)
 - [Expression and Differential Expression analysis](#expression-and-differential-expression-analysis)
 - [Visualization of the results](#visualization-of-the-results)
@@ -44,7 +44,7 @@ Before you start, you have to consider the **experiment design**:
 
 
 ___
-## Set up environment on the Genomic Compute Cluster on Quest
+## Set up your environment on the Genomic Compute Cluster on Quest
 
 If you would like to perform RNA-seq on Quest, you need to first do the followings:
 
