@@ -225,7 +225,7 @@ This will perform the following:
 -	_Other software available: **HTSeq-count, featureCounts**_
 
 ___
-### 4. Expression and Differential Expression analysis
+## Expression and Differential Expression analysis
 
 To quantify expression of transcript/genes among different conditions:
 -	Count the number of mapped reads on each transcript  
@@ -343,7 +343,7 @@ To quantify expression of transcript/genes among different conditions:
 
 
 ___
-### 5. Visualization of the results
+## Visualization of the results
 
 #### Step 10. Choose your environment for Visualization
 Not only for visualizing the expression differences, the step is also essential for checking additional quality control criteria such as PCR duplication caused by variant calling. In our examples, we will use _**R Ballgown package**_ for RNA-seq analysis specific visualization.
