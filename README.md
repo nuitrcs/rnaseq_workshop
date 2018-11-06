@@ -1,5 +1,5 @@
 # Study gene expression using RNA-seq analysis on Quest
-Thanks to Yoonie Joo who created these workshop materials on behalf of Research Computing for the Genomics Community at Northwestern.
+*Yoonie Joo created these workshop materials on behalf of Research Computing for the Genomics Community at Northwestern.*
 
 ### Table of Contents
 ### 1. Introduction to RNA-seq (Experimental design)
