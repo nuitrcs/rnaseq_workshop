@@ -59,7 +59,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
       -	`‘genes’` directory contains human gene annotations for GrCH38 from RefSeq database. 
       -	`‘mergelist.txt’` and ‘geuvadis_phenodata.csv’ are exemplary scripts that you might want to write yourself in a text editor. 
       -	Since it is paired-end reads, each sample has two files: all sequence is in compressed 'fastq' format
-        -	(cf) Our analysis only contains the genome of chromosome X, but if someone is interested in the full data sets, these files are ~25 times larger and you can find them: [ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol](ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol)
+        -	(cf) Our analysis only contains the genome of chromosome X, but if someone is interested in the full data sets, these files are ~25 times larger and you can find them [here](ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol)
 5. Create a working directory for the analysis and copy the data to your directory: 
 ```bash
 	mkdir /home/YOUR_NETID/RNAseq_workshop		 
