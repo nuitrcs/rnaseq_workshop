@@ -48,10 +48,10 @@ ___
 
 If you would like to perform RNA-seq on Quest, you need to first do the followings:
 
-- [ ]	1. If you don't already have one, [apply for an account on Quest](https://www.it.northwestern.edu/secure/forms/research/allocation-request.html)
-- [ ]	2. [Request access to the Genomic Compute Cluster on Quest](https://kb.northwestern.edu/page.php?id=78602) 
-- [ ]	3. [Log in to Quest](https://kb.northwestern.edu/page.php?id=70706)
-- [ ]	4. In this protocol, we will run an example analysis with chromosome X data of Homo sapiens. (Ref: [Nature Protocol 2016](https://www.nature.com/articles/nprot.2016.095)) 
+- 1. If you don't already have one, [apply for an account on Quest](https://www.it.northwestern.edu/secure/forms/research/allocation-request.html)
+- 2. [Request access to the Genomic Compute Cluster on Quest](https://kb.northwestern.edu/page.php?id=78602) 
+- 3. [Log in to Quest](https://kb.northwestern.edu/page.php?id=70706)
+- 4. In this protocol, we will run an example analysis with chromosome X data of Homo sapiens. (Ref: [Nature Protocol 2016](https://www.nature.com/articles/nprot.2016.095)) 
     - All necessary data you need are available in the following directory: _**/QuestDownloadPath/**_
       -	`'samples'` directory contains paired-end RNA-seq reads for 6 samples, 3 male and 3 female subjects from YRI (Yoruba from Ibadan, Nigeria) population. 
       -	`‘indexes’` directory contains the indexes for chromosome X for HISAT2. 
@@ -60,7 +60,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
       -	`‘mergelist.txt’` and ‘geuvadis_phenodata.csv’ are exemplary scripts that you might want to write yourself in a text editor. 
       -	Since it is paired-end reads, each sample has two files: all sequence is in compressed 'fastq' format
         -	(cf) Our analysis only contains the genome of chromosome X, but if someone is interested in the full data sets, these files are ~25 times larger and you can find them: [ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol](ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol)
-- [ ]	5. Create a working directory for the analysis and copy the data to your directory: 
+- 5. Create a working directory for the analysis and copy the data to your directory: 
 ```bash
 	mkdir /home/YOUR_NETID/RNAseq_workshop		 
 	cd /home/YOUR_NETID/RNAseq_workshop
