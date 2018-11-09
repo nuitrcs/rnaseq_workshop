@@ -67,7 +67,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
 ```
 
 #### Software setup/installation:
-- [ ] Load the necessary modules on Quest: fastqc, samtools, HISAT2
+6. Load the necessary modules on Quest: fastqc, samtools, HISAT2
 ```bash
 	module load fastqc/0.11.5
 	module load hisat2/2.0.4  
