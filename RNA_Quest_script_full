@@ -2,10 +2,11 @@
 ### * It is highly enouraged to install the required packages before attending the workshop
 
 ssh YOUR_NETID@quest.it.northwestern.edu
-mkdir /home/YOUR_NETID/RNAseq_workshop		### Your working directory 
-cd /home/YOUR_NETID/RNAseq_workshop
-cp -R /projects/b1042/RCS/RNAseq/* .		### Copy workshop data including folders
+cd ~
+cp -r /projects/genomicsshare/RNAseq_workshop .
+cd RNAseq_workshop
 
+### Load the necessary modules 
 module load fastqc/0.11.5
 module load hisat2/2.0.4  
 module load samtools/1.6 
@@ -17,16 +18,16 @@ mkdir qualitycheck
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
 
 ### <Step2. Filtering raw reads with Trimmomatic>
-java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188273_chrX_1.fastq.gz ./samples/ERR188273_chrX_2.fastq.gz ./ERR188273_chrX_1_paired_filtered.fastq.gz ./ERR188273_chrX_1_unpaired_filtered.fastq.gz ./ERR188273_chrX_2_paired_filtered.fastq.gz ./ERR188273_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
-java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188044_chrX_1.fastq.gz ./samples/ERR188044_chrX_2.fastq.gz ./ERR188044_chrX_1_paired_filtered.fastq.gz ./ERR188044_chrX_1_unpaired_filtered.fastq.gz ./ERR188044_chrX_2_paired_filtered.fastq.gz ./ERR188044_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
-java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188104_chrX_1.fastq.gz ./samples/ERR188104_chrX_2.fastq.gz ./ERR188104_chrX_1_paired_filtered.fastq.gz ./ERR188104_chrX_1_unpaired_filtered.fastq.gz ./ERR188104_chrX_2_paired_filtered.fastq.gz ./ERR188104_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
-java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188234_chrX_1.fastq.gz ./samples/ERR188234_chrX_2.fastq.gz ./ERR188234_chrX_1_paired_filtered.fastq.gz ./ERR188234_chrX_1_unpaired_filtered.fastq.gz ./ERR188234_chrX_2_paired_filtered.fastq.gz ./ERR188234_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
-java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188454_chrX_1.fastq.gz ./samples/ERR188454_chrX_2.fastq.gz ./ERR188454_chrX_1_paired_filtered.fastq.gz ./ERR188454_chrX_1_unpaired_filtered.fastq.gz ./ERR188454_chrX_2_paired_filtered.fastq.gz ./ERR188454_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
-java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR204916_chrX_1.fastq.gz ./samples/ERR204916_chrX_2.fastq.gz ./ERR204916_chrX_1_paired_filtered.fastq.gz ./ERR204916_chrX_1_unpaired_filtered.fastq.gz ./ERR204916_chrX_2_paired_filtered.fastq.gz ./ERR204916_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188273_chrX_1.fastq.gz ./samples/ERR188273_chrX_2.fastq.gz ./ERR188273_chrX_1_paired_filtered.fastq.gz ./ERR188273_chrX_1_unpaired_filtered.fastq.gz ./ERR188273_chrX_2_paired_filtered.fastq.gz ./ERR188273_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188044_chrX_1.fastq.gz ./samples/ERR188044_chrX_2.fastq.gz ./ERR188044_chrX_1_paired_filtered.fastq.gz ./ERR188044_chrX_1_unpaired_filtered.fastq.gz ./ERR188044_chrX_2_paired_filtered.fastq.gz ./ERR188044_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30;
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188104_chrX_1.fastq.gz ./samples/ERR188104_chrX_2.fastq.gz ./ERR188104_chrX_1_paired_filtered.fastq.gz ./ERR188104_chrX_1_unpaired_filtered.fastq.gz ./ERR188104_chrX_2_paired_filtered.fastq.gz ./ERR188104_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188234_chrX_1.fastq.gz ./samples/ERR188234_chrX_2.fastq.gz ./ERR188234_chrX_1_paired_filtered.fastq.gz ./ERR188234_chrX_1_unpaired_filtered.fastq.gz ./ERR188234_chrX_2_paired_filtered.fastq.gz ./ERR188234_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188454_chrX_1.fastq.gz ./samples/ERR188454_chrX_2.fastq.gz ./ERR188454_chrX_1_paired_filtered.fastq.gz ./ERR188454_chrX_1_unpaired_filtered.fastq.gz ./ERR188454_chrX_2_paired_filtered.fastq.gz ./ERR188454_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR204916_chrX_1.fastq.gz ./samples/ERR204916_chrX_2.fastq.gz ./ERR204916_chrX_1_paired_filtered.fastq.gz ./ERR204916_chrX_1_unpaired_filtered.fastq.gz ./ERR204916_chrX_2_paired_filtered.fastq.gz ./ERR204916_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
 
 ### <Step3. Re-analyze the quality of filtered reads with FastQC>
-### fastqc --outdir ./qualitycheck/ *_chrX_*_filtered.fastq.gz
-### SKIP for the workshop
+fastqc --outdir ./qualitycheck/ *_chrX_*_filtered.fastq.gz
+
 
 ### <Step4. Step4. Alignment of RNA-seq reads to the genome with HISAT>
 hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1_paired_filtered.fastq.gz -2 ./ERR188044_chrX_2_paired_filtered.fastq.gz -S ERR188044_chrX.sam
