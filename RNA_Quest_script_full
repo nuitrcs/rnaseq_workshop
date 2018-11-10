@@ -1,0 +1,166 @@
+### Bash environment - Setup 
+### * It is highly enouraged to install the required packages before attending the workshop
+
+ssh YOUR_NETID@quest.it.northwestern.edu
+mkdir /home/YOUR_NETID/RNAseq_workshop		### Your working directory 
+cd /home/YOUR_NETID/RNAseq_workshop
+cp -R /projects/b1042/RCS/RNAseq/* .		### Copy workshop data including folders
+
+module load fastqc/0.11.5
+module load hisat2/2.0.4  
+module load samtools/1.6 
+module load stringtie/1.3.4 
+
+### <Step1. Analyze raw reads’ quality with FastQC> 
+### Bash environment 
+mkdir qualitycheck
+fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
+
+### <Step2. Filtering raw reads with Trimmomatic>
+java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188273_chrX_1.fastq.gz ./samples/ERR188273_chrX_2.fastq.gz ./ERR188273_chrX_1_paired_filtered.fastq.gz ./ERR188273_chrX_1_unpaired_filtered.fastq.gz ./ERR188273_chrX_2_paired_filtered.fastq.gz ./ERR188273_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188044_chrX_1.fastq.gz ./samples/ERR188044_chrX_2.fastq.gz ./ERR188044_chrX_1_paired_filtered.fastq.gz ./ERR188044_chrX_1_unpaired_filtered.fastq.gz ./ERR188044_chrX_2_paired_filtered.fastq.gz ./ERR188044_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188104_chrX_1.fastq.gz ./samples/ERR188104_chrX_2.fastq.gz ./ERR188104_chrX_1_paired_filtered.fastq.gz ./ERR188104_chrX_1_unpaired_filtered.fastq.gz ./ERR188104_chrX_2_paired_filtered.fastq.gz ./ERR188104_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188234_chrX_1.fastq.gz ./samples/ERR188234_chrX_2.fastq.gz ./ERR188234_chrX_1_paired_filtered.fastq.gz ./ERR188234_chrX_1_unpaired_filtered.fastq.gz ./ERR188234_chrX_2_paired_filtered.fastq.gz ./ERR188234_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR188454_chrX_1.fastq.gz ./samples/ERR188454_chrX_2.fastq.gz ./ERR188454_chrX_1_paired_filtered.fastq.gz ./ERR188454_chrX_1_unpaired_filtered.fastq.gz ./ERR188454_chrX_2_paired_filtered.fastq.gz ./ERR188454_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+java -jar trimmomatic-0.33.jar PE -phred33 ./samples/ERR204916_chrX_1.fastq.gz ./samples/ERR204916_chrX_2.fastq.gz ./ERR204916_chrX_1_paired_filtered.fastq.gz ./ERR204916_chrX_1_unpaired_filtered.fastq.gz ./ERR204916_chrX_2_paired_filtered.fastq.gz ./ERR204916_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30 
+
+### <Step3. Re-analyze the quality of filtered reads with FastQC>
+### fastqc --outdir ./qualitycheck/ *_chrX_*_filtered.fastq.gz
+### SKIP for the workshop
+
+### <Step4. Step4. Alignment of RNA-seq reads to the genome with HISAT>
+hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1_paired_filtered.fastq.gz -2 ./ERR188044_chrX_2_paired_filtered.fastq.gz -S ERR188044_chrX.sam
+hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188104_chrX_1_paired_filtered.fastq.gz -2 ./ERR188104_chrX_2_paired_filtered.fastq.gz -S ERR188104_chrX.sam
+hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188234_chrX_1_paired_filtered.fastq.gz -2 ./ERR188234_chrX_2_paired_filtered.fastq.gz -S ERR188234_chrX.sam
+hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188273_chrX_1_paired_filtered.fastq.gz -2 ./ERR188273_chrX_2_paired_filtered.fastq.gz -S ERR188273_chrX.sam
+hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188454_chrX_1_paired_filtered.fastq.gz -2 ./ERR188454_chrX_2_paired_filtered.fastq.gz -S ERR188454_chrX.sam
+hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR204916_chrX_1_paired_filtered.fastq.gz -2 ./ERR204916_chrX_2_paired_filtered.fastq.gz -S ERR204916_chrX.sam
+
+### <Step 5. Sort and convert the SAM file to BAM with samtools>
+samtools sort -@ 2 -o ERR188044_chrX.bam ERR188044_chrX.sam
+samtools sort -@ 2 -o ERR188104_chrX.bam ERR188104_chrX.sam
+samtools sort -@ 2 -o ERR188234_chrX.bam ERR188234_chrX.sam
+samtools sort -@ 2 -o ERR188273_chrX.bam ERR188273_chrX.sam
+samtools sort -@ 2 -o ERR188454_chrX.bam ERR188454_chrX.sam
+samtools sort -@ 2 -o ERR204916_chrX.bam ERR204916_chrX.sam
+
+### <Step 6. Assemble and quantify expressed genes and transcripts with StringTie>
+### 6-a. Stringtie assembles transcripts for each sample:
+stringtie -p 2 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
+stringtie -p 2 -G ./genes/chrX.gtf -o ERR188104_chrX.gtf -l ERR188104 ERR188104_chrX.bam
+stringtie -p 2 -G ./genes/chrX.gtf -o ERR188234_chrX.gtf -l ERR188234 ERR188234_chrX.bam
+stringtie -p 2 -G ./genes/chrX.gtf -o ERR188273_chrX.gtf -l ERR188273 ERR188273_chrX.bam
+stringtie -p 2 -G ./genes/chrX.gtf -o ERR188454_chrX.gtf -l ERR188454 ERR188454_chrX.bam
+stringtie -p 2 -G ./genes/chrX.gtf -o ERR204916_chrX.gtf -l ERR204916 ERR204916_chrX.bam
+
+### 6-b. Stringtie merges transcripts from all samples:
+stringtie --merge -p 2 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
+
+### 6-c. Stringtie estimates transcript abundances and create table counts for Ballgown:
+stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
+stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188104/ERR188104_chrX.gtf ERR188104_chrX.bam
+stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188234/ERR188234_chrX.gtf ERR188234_chrX.bam
+stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188273/ERR188273_chrX.gtf ERR188273_chrX.bam
+stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188454/ERR188454_chrX.gtf ERR188454_chrX.bam
+stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR204916/ERR204916_chrX.gtf ERR204916_chrX.bam
+
+### <Step 7. Run  differential expression analysis with Ballgown>
+module load R
+R 
+
+### 7-a. R environment setup (takes ~ 3mins)
+library("devtools") 
+source("http://www.bioconductor.org/biocLite.R")
+biocLite(c("alyssafrazee/RSkittleBrewer","ballgown", "genefilter","dplyr","devtools"))
+
+library("ballgown")
+library("RSkittleBrewer") # for color setup
+library("genefilter") # faster calculation of mean/variance
+library("dplyr") # to sort/arrange results
+library("devtools")  # reproducibility/installing packages
+
+### 7-b. Load phenotype data 
+pheno_data = read.csv("phenodata.csv")
+head(pheno_data)
+
+### 7-c. Read in the expression data that were calculated by Stringtie in previous step 6-(c)
+chrX <- ballgown(dataDir="ballgown", samplePattern="ERR", pData=pheno_data)
+str(chrX)
+
+### 7-d. Filter to remove low-abundance genes 
+chrX_filtered <- subset(chrX, "rowVars(texpr(chrX)) >1", genomesubset=TRUE)
+str(chrX_filtered)
+
+### <Step 8. Identify transcripts/genes that show statistically significant differences with Ballgown>
+### 8-a. Identify transcripts that show statistically significant differences between groups:
+results_transcripts <- stattest(chrX_filtered, feature="transcript", covariate="sex", adjustvars=c("condition"), getFC=TRUE, meas="FPKM")
+head(results_transcripts)
+
+# Add gene names and gene IDs to the results:
+results_transcripts <- data.frame(geneNames=ballgown::geneNames(chrX_filtered), geneIDs=ballgown::geneIDs(chrX_filtered), results_transcripts)
+head(results_transcripts)
+
+### 8-b. Identify genes that show statistically significant differences between groups 
+results_genes <- stattest(chrX_filtered, feature="gene", covariate="sex", adjustvars=c("condition"), getFC=TRUE, meas="FPKM")
+head(results_genes)
+
+### <Step 9. What is the most ‘differentially’ expressed transcript/genes between sexes?>
+#Sort the results from the smallest P value to the largest:
+results_transcripts <- results_transcripts[order(results_transcripts$pval),]
+results_genes <- results_genes[order(results_genes$pval),]
+
+#What are the top transcript/gene expressed differently between sexes? 
+head(results_transcripts)
+head(results_genes)
+
+# Save the analysis results to csv files:
+write.csv(results_transcripts, file="DifferentialExpressionAnalysis_transcript_results.csv", row.names=FALSE)
+write.csv(results_genes, file="DifferentialExpressionAnalysis_gene_results.csv", row.names=FALSE)
+save.image()			# your workspace will be saved as '.RData' in current working directory
+
+### <Step 10. Choose your environment for Visualization>
+
+### For small and moderately sized interactive analysis: 
+### •	Go to Rstudio-Quest analytics node on your browser
+### 	https://rstudio.questanalytics.northwestern.edu/auth-sign-in 
+### •	You might have to re-install the required R packages as described above### 
+
+### 	> setwd("/YourWorkingDirectory/")
+### 	> load(".RData")### 
+
+### For large sized interactice analysis that might require over 4GB of RAM or more than 4+ cores:
+### •	Request an interactive session on a compute node 
+###     msub -I -l nodes=1:ppn=4 -l walltime=01:00:00 -q genomics -A b1042
+### •	Resource: https://kb.northwestern.edu/69247
+
+### Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in
+
+setwd("/home/YOUR_NETID/RNAseq_workshop/") 
+load(".RData")
+
+### <Step11. Visualization>
+### 11-a. Plot for distribution of gene abundances across samples:
+fpkm <- texpr(chrX, meas='FPKM')
+fpkm <- log2(fpkm +1)
+boxplot(fpkm, col=as.numeric(pheno_data$sex), las=2,ylab='log2(FPKM+1)')
+
+### 11-b. Plot for individual expression of a certain transcript between groups: 
+# Setup palette with your favorite colors
+coloring <- c('darkgreen', 'skyblue', 'hotpink', 'orange', 'lightyellow')
+palette(coloring)
+
+# In this example, by looking head(results_transcripts), I randomly choose to draw the 13th most differientially expressed transcript. (gene name "XIST") You can also decide the transcript/gene of your interest. What you need to know is its genename or transcript name! 
+which(ballgown::geneNames(chrX)=="XIST")	# 1484
+ballgown::transcriptNames(chrX)[1484]		# NR_001564
+plot(fpkm[1484,] ~ pheno_data$sex, border=c(1,2), main=paste(ballgown::geneNames(chrX)[1484], ' : ',ballgown::transcriptNames(chrX)[1484]), pch=19, xlab="sex", ylab='log2(FPKM+1)')
+points(fpkm[1484,] ~ jitter(as.numeric(pheno_data$sex)), col=as.numeric(pheno_data$sex))
+
+# 11-c/d. Plot the average expression levels for all transcripts of a gene within different groups:
+geneIDs(chrX)[1484] # MSTRG.495
+plotMeans('MSTRG.495', chrX_filtered, groupvar="sex", legend=FALSE)
+plotMeans(ballgown::geneIDs(chrX)[1484], chrX, groupvar="sex", legend=FALSE)
+
+Play with it! 
+
+
+
