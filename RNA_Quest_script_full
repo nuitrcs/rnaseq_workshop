@@ -54,7 +54,7 @@ stringtie -p 1 -G ./genes/chrX.gtf -o ERR188454_chrX.gtf -l ERR188454 ERR188454_
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR204916_chrX.gtf -l ERR204916 ERR204916_chrX.bam;
 
 ### 6-b. Stringtie merges transcripts from all samples:
-stringtie --merge -p 2 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
+stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
 
 ### 6-c. Stringtie estimates transcript abundances and create table counts for Ballgown:
 stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam;
