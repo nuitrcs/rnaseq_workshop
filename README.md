@@ -10,6 +10,7 @@
 ___
 
 ## Introduction to RNA-seq 
+*Northwestern genomics researchers are also invited to use CETO, an RNA-seq pipeline developed by Elizabeth Bartom.  Information on CETO is available [here](https://github.com/ebartom/NGSbartom); to use CETO on Quest, please contact e-bartom@northwestern.edu.
 
 There are several sequencing analysis methods available based on the **goal of your experiment**:
 *	_**RNA-seq**_ : _co-expression networks, differentially expressed genes_ 
