@@ -18,30 +18,37 @@ module load samtools/1.6;
 module load stringtie/1.3.4; 
 ```
 ### Step1. Analyze raw reads’ quality with FastQC  
-FastQC is a tool for Quality Control: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
-On the command line on Quest:						
+FastQC is a quality control tool which provides a report on the quality of your samples: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
+From the command line on Quest:						
 ```
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz 	 
+```
+### Step2. Filtering raw reads with Trimmomatic
+Trimmomatic is a flexible read trimming tool for Illumina NGS data: http://www.usadellab.org/cms/index.php?page=trimmomatic
+```
+java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188273_chrX_1.fastq.gz ./samples/ERR188273_chrX_2.fastq.gz ./ERR188273_chrX_1_paired_filtered.fastq.gz ./ERR188273_chrX_1_unpaired_filtered.fastq.gz ./ERR188273_chrX_2_paired_filtered.fastq.gz ./ERR188273_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
+```
+### Step3. Re-analyze the quality of filtered reads with FastQC
+Confirm that this sample has enough quality to be worth studying further.
+```
+fastqc --outdir ./qualitycheck/ *_chrX_*_filtered.fastq.gz
 ```
 ### Step4. Alignment of RNA-seq reads to the genome with HISAT2
 HISAT2 is a fast aligner: https://ccb.jhu.edu/software/hisat2/index.shtml
 ```
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
 ```
-
 ### Step 5. Sort and convert the SAM file to BAM with samtools
 Samtools helps convert sam files into different formats: https://github.com/samtools/samtools
 ```
 samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
 ```
-
 ### Step 6. Assemble and quantify expressed genes and transcripts with StringTie
 StringTie is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts: https://ccb.jhu.edu/software/stringtie/
 ### 6-a. Stringtie assembles transcripts for each sample:
 ```
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
 ```
-
 ### 6-b. Stringtie merges transcripts from all samples:
 ```
 stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
@@ -50,6 +57,7 @@ stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
 ```
 stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
 ```
+
 ## Submit a job to run the pipeline to this point on all the samples  
 This part is done on the compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  Use msub to submit the job to run the pipeline on all samples on the compute nodes:
 ```
