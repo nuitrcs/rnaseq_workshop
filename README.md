@@ -80,7 +80,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
 ___
 ## Quality Check - Alignment - Estimate transcript abundances of RNA-seq reads
 
-#### Step1. Analyze raw reads’ quality with FastQC
+#### Step1. Analyze raw reads’ quality with [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 ###### Input: bam/sam/fastQ file	:heavy_minus_sign:	Output: zip/html file contains quality report for each read
 -	We have to confirm average quality per read, consistency, GC content (PCR bias), adapter/k-mer content, excessive duplicated reads, etc.
 -	You can specify the list of adapter sequences with –adapters (-a) specifier. 
@@ -94,7 +94,7 @@ ___
 	fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
 ```
 One of the output files for FastQC can be viewed [here](http://htmlpreview.github.com/?https://github.com/nuitrcs/rnqseq_workshop/blob/master/ERR188234_chrX_1_fastqc.html).
-#### Step2. Filter raw reads with Trimmomatic
+#### Step2. Filter raw reads with [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic)
 ###### Input: fastQ file before filtering	:heavy_minus_sign:	Output: fastQ file after filtering
 -	Even if our data looks fine, it is always a good idea to filter out low/poor quality reads. 
 -	Appropriate threshold should be determined by each experiment design or organism. 
@@ -147,7 +147,7 @@ This will perform the following:
 	fastqc --outdir ./qualitycheck/filtered/ *_chrX_*_filtered.fastq.gz
 ```
 
-#### Step4. Alignment of RNA-seq reads to the genome with HISAT
+#### Step4. Alignment of RNA-seq reads to the genome with [HISAT](https://ccb.jhu.edu/software/hisat2/index.shtml)
 ###### Input: FastQ reads (2 per sample)	:heavy_minus_sign:	Output: SAM files (1 per sample)
 -	HISAT2 (v 2.1.0) maps the reads for each sample to the ref genome: [Help page: `hisat2 –h` ]
 -	Note that HISAT2 commands for paired(-1,-2) /unpaired (-U) reads are different. 
@@ -155,12 +155,12 @@ This will perform the following:
 	-	(e.g.) `--sra-acc SRR353653,SRR353654`
 
 ```bash
-	hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1_paired_filtered.fastq.gz -2 ./ERR188044_chrX_2_paired_filtered.fastq.gz -S ERR188044_chrX.sam
-	hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188104_chrX_1_paired_filtered.fastq.gz -2 ./ERR188104_chrX_2_paired_filtered.fastq.gz -S ERR188104_chrX.sam
-	hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188234_chrX_1_paired_filtered.fastq.gz -2 ./ERR188234_chrX_2_paired_filtered.fastq.gz -S ERR188234_chrX.sam
-	hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188273_chrX_1_paired_filtered.fastq.gz -2 ./ERR188273_chrX_2_paired_filtered.fastq.gz -S ERR188273_chrX.sam
-	hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR188454_chrX_1_paired_filtered.fastq.gz -2 ./ERR188454_chrX_2_paired_filtered.fastq.gz -S ERR188454_chrX.sam
-	hisat2 -p 2 --dta -x ./indexes/chrX_tran -1 ./ERR204916_chrX_1_paired_filtered.fastq.gz -2 ./ERR204916_chrX_2_paired_filtered.fastq.gz -S ERR204916_chrX.sam
+	hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1_paired_filtered.fastq.gz -2 ./ERR188044_chrX_2_paired_filtered.fastq.gz -S ERR188044_chrX.sam
+	hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188104_chrX_1_paired_filtered.fastq.gz -2 ./ERR188104_chrX_2_paired_filtered.fastq.gz -S ERR188104_chrX.sam
+	hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188234_chrX_1_paired_filtered.fastq.gz -2 ./ERR188234_chrX_2_paired_filtered.fastq.gz -S ERR188234_chrX.sam
+	hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188273_chrX_1_paired_filtered.fastq.gz -2 ./ERR188273_chrX_2_paired_filtered.fastq.gz -S ERR188273_chrX.sam
+	hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188454_chrX_1_paired_filtered.fastq.gz -2 ./ERR188454_chrX_2_paired_filtered.fastq.gz -S ERR188454_chrX.sam
+	hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR204916_chrX_1_paired_filtered.fastq.gz -2 ./ERR204916_chrX_2_paired_filtered.fastq.gz -S ERR204916_chrX.sam
 
 * Confirm the QC parameters  
 ```
@@ -175,49 +175,49 @@ This will perform the following:
 
 
 
-#### Step 5. Sort and convert the SAM file to BAM with samtools 
+#### Step 5. Sort and convert the SAM file to BAM with [samtools](https://github.com/samtools/samtools)
 ###### Input: SAM file	:heavy_minus_sign:	Output: BAM file 
 -	Samtools (v 2.1.0) sorts and converts the SAM file to BAM: [Help page: `samtools –help`]
 -	Both SAM/BAM formats represent alignments. BAM is more compressed format. Unmapped reads may also be in the BAM file. Reads that map to multiple location will show up multiple times as well.
 -	Exceeding mapping percentage over 100% does not indicate how many reads mapped. They can be inflated by filtering low q reads prior to alignment.
 
 ```bash
-	samtools sort -@ 2 -o ERR188044_chrX.bam ERR188044_chrX.sam
-	samtools sort -@ 2 -o ERR188104_chrX.bam ERR188104_chrX.sam
-	samtools sort -@ 2 -o ERR188234_chrX.bam ERR188234_chrX.sam
-	samtools sort -@ 2 -o ERR188273_chrX.bam ERR188273_chrX.sam
-	samtools sort -@ 2 -o ERR188454_chrX.bam ERR188454_chrX.sam
-	samtools sort -@ 2 -o ERR204916_chrX.bam ERR204916_chrX.sam
+	samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
+	samtools sort -@ 1 -o ERR188104_chrX.bam ERR188104_chrX.sam
+	samtools sort -@ 1 -o ERR188234_chrX.bam ERR188234_chrX.sam
+	samtools sort -@ 1 -o ERR188273_chrX.bam ERR188273_chrX.sam
+	samtools sort -@ 1 -o ERR188454_chrX.bam ERR188454_chrX.sam
+	samtools sort -@ 1 -o ERR204916_chrX.bam ERR204916_chrX.sam
 ```
 
-#### Step 6. Assemble and quantify expressed genes and transcripts with StringTie 
+#### Step 6. Assemble and quantify expressed genes and transcripts with [StringTie](https://ccb.jhu.edu/software/stringtie/)
 
 - [ ]	(a) Stringtie assembles transcripts for each sample:
 ###### Input: BAM file + reference GTF file	:heavy_minus_sign:	Output: Assembled GTF file (1 per sample)
 ```bash
-	stringtie -p 2 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
-	stringtie -p 2 -G ./genes/chrX.gtf -o ERR188104_chrX.gtf -l ERR188104 ERR188104_chrX.bam
-	stringtie -p 2 -G ./genes/chrX.gtf -o ERR188234_chrX.gtf -l ERR188234 ERR188234_chrX.bam
-	stringtie -p 2 -G ./genes/chrX.gtf -o ERR188273_chrX.gtf -l ERR188273 ERR188273_chrX.bam
-	stringtie -p 2 -G ./genes/chrX.gtf -o ERR188454_chrX.gtf -l ERR188454 ERR188454_chrX.bam
-	stringtie -p 2 -G ./genes/chrX.gtf -o ERR204916_chrX.gtf -l ERR204916 ERR204916_chrX.bam
+	stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
+	stringtie -p 1 -G ./genes/chrX.gtf -o ERR188104_chrX.gtf -l ERR188104 ERR188104_chrX.bam
+	stringtie -p 1 -G ./genes/chrX.gtf -o ERR188234_chrX.gtf -l ERR188234 ERR188234_chrX.bam
+	stringtie -p 1 -G ./genes/chrX.gtf -o ERR188273_chrX.gtf -l ERR188273 ERR188273_chrX.bam
+	stringtie -p 1 -G ./genes/chrX.gtf -o ERR188454_chrX.gtf -l ERR188454 ERR188454_chrX.bam
+	stringtie -p 1 -G ./genes/chrX.gtf -o ERR204916_chrX.gtf -l ERR204916 ERR204916_chrX.bam
 ```
 
 - [ ]	(b) Stringtie merges transcripts from all samples:
 ###### Input: multiple GTF files to be merged + mergelist.txt with filenames	:heavy_minus_sign:	Output: One merged GTF (will be used as a reference for relative comparisons among samples) 
 ```bash
-	stringtie --merge -p 2 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
+	stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
 ```
 
-- [ ]	(c) Stringtie estimates transcript abundances and create table counts for Ballgown:
+- [ ]	(c) Stringtie estimates transcript abundances and create table counts for Ballgown (software used downstream):
 ###### Input: BAM file of each sample + one merged GTF	:heavy_minus_sign:	Output: several output files for Ballgown-analysis ready 
 ```bash
-	stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
-	stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188104/ERR188104_chrX.gtf ERR188104_chrX.bam
-	stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188234/ERR188234_chrX.gtf ERR188234_chrX.bam
-	stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188273/ERR188273_chrX.gtf ERR188273_chrX.bam
-	stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR188454/ERR188454_chrX.gtf ERR188454_chrX.bam
-	stringtie -e -B -p 2 -G stringtie_merged.gtf -o ./ballgown/ERR204916/ERR204916_chrX.gtf ERR204916_chrX.bam
+	stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
+	stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188104/ERR188104_chrX.gtf ERR188104_chrX.bam
+	stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188234/ERR188234_chrX.gtf ERR188234_chrX.bam
+	stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188273/ERR188273_chrX.gtf ERR188273_chrX.bam
+	stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188454/ERR188454_chrX.gtf ERR188454_chrX.bam
+	stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR204916/ERR204916_chrX.gtf ERR204916_chrX.bam
 ```
 -	_Other software available: **HTSeq-count, featureCounts**_
 
@@ -230,7 +230,7 @@ To quantify expression of transcript/genes among different conditions:
 
 ###### Input: grouping info of the samples (csv file)	:heavy_minus_sign:	Output: SAM files (1 per sample)
 
-#### Step 7. Run differential expression analysis with Ballgown
+#### Step 7. Run differential expression analysis with [Ballgown](https://bioconductor.org/packages/release/bioc/html/ballgown.html)
 
 - [ ]	(a) R Environment setup (Load/install R packages: ballgown, RSkittleBrewer, genefilter, dplyr, devtools)
 ```R
