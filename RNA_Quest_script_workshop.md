@@ -1,5 +1,5 @@
 # RNA-seq Workshop Script
-The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  You can find out more about getting an account on Quest at https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html
+The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  Information on applying for an account on Quest can be found here: https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html
 
 ## Running Commands on Quest
 ### Bash environment - Setup 
@@ -10,6 +10,7 @@ cp -R /projects/genomicsshare/RNAseq_workshop .
 cd RNAseq_workshop                        
 ```
 #### Load the necessary modules
+Software on Quest can either be installed locally or loaded from system-wide modules: https://kb.northwestern.edu/page.php?id=70718
 ```
 module load fastqc/0.11.5;
 module load hisat2/2.0.4;  
@@ -17,22 +18,25 @@ module load samtools/1.6;
 module load stringtie/1.3.4; 
 ```
 ### Step1. Analyze raw reads’ quality with FastQC  
-### STEPS 1 - 3 DEMO ONLY due to time constraints
-#### Bash environment 						
+FastQC is a tool for Quality Control: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
+On the command line on Quest:						
 ```
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz 	 
 ```
-### Step4. Alignment of RNA-seq reads to the genome with HISAT
+### Step4. Alignment of RNA-seq reads to the genome with HISAT2
+HISAT2 is a fast aligner: https://ccb.jhu.edu/software/hisat2/index.shtml
 ```
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
 ```
 
 ### Step 5. Sort and convert the SAM file to BAM with samtools
+Samtools helps convert sam files into different formats: https://github.com/samtools/samtools
 ```
 samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
 ```
 
 ### Step 6. Assemble and quantify expressed genes and transcripts with StringTie
+StringTie is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts: https://ccb.jhu.edu/software/stringtie/
 ### 6-a. Stringtie assembles transcripts for each sample:
 ```
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
