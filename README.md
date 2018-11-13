@@ -88,7 +88,7 @@ ___
 -	*Other software options: __FastQC__ is for illumina read, __NGSQC__ is for basically every platform*
 
 ```bash
-* You can find software instruction by typing a commandline: fastqc -h 
+* You can get software instructions by typing a commandline: fastqc -h 
 	
 	mkdir qualitycheck
 	fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
@@ -115,7 +115,7 @@ One of the output files for FastQC can be viewed [here](http://htmlpreview.githu
 
 	-	It works with FASTQ (using phred + 33 or phred + 64 quality scores, depending on the Illumina pipeline used), either uncompressed or gzipp'ed FASTQ. Use of gzip format is determined based on the .gz extension.
 
--	*Other software options: __[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic), [Fastx-toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html)__ (available on Quest)*
+-	*Another software option: [Fastx-toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html)__ (available on Quest)*
 	-	Optional instruction - FastX-toolkit does not accept gzip compressed files, so we would better make pipe and output in compressed format. The following command allows us to throw out any read that fails to meet a threshold of at least 70% of bases with Phred quality score > 20.
 		- Load FastQC on Quest: `module load fastx_toolkit/0.0.14` 
 		- Filtering command: `gunzip -c ./samples/ERR188273_chrX_1.fastq.gz | fastq_quality_filter -q 20 -p 70 -i -z -o ERR188273_chrX_1_fastqqc_filtered.fastq` 
