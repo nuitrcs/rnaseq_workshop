@@ -1,4 +1,4 @@
-#RNA-seq Workshop Script
+# RNA-seq Workshop Script
 
 ### Bash environment - Setup 
 
