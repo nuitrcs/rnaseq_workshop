@@ -73,6 +73,7 @@ Use `msub` to submit the job to run the pipeline on all samples on the compute n
 ```
 msub RNAseq_workshop_submit.sh
 ```
+This typically takes 15 minute to complete, since this workshop is using small data.  When you run it with larger data, it will take longer.  Also, wait times are variable on Quest, depending on how busy the compute nodes are at any given time.
 ## Analysis and Visualization performed in RStudio
 Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in and login with your Quest credentials.  Once RStudio has started up, type:
 ```
