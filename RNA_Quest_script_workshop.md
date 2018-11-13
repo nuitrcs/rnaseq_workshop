@@ -1,9 +1,13 @@
 # RNA-seq Workshop Script
-The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  Information on applying for an account on Quest can be found [here](https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html)
+The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  Information on applying for an account on Quest can be found [here](https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html).
 
 ## Running Commands on Quest
 ### Bash environment - Setup 
-On your local computer, open a terminal on your local computer and connect to Quest with your netID (ssh YOUR_NETID@quest.it.northwestern.edu), then copy the workshop directory into your home directory: 
+On your local computer, open a terminal on your local computer and [connect to Quest](https://kb.northwestern.edu///internal/page.php?id=70705) with your netID, for example from Terminal:
+```
+ssh YOUR_NETID@quest.it.northwestern.edu
+```
+Once you have logged in and are in your home directory, copy the workshop directory into your home directory: 
 ``` 
 cd ~                                      
 cp -R /projects/genomicsshare/RNAseq_workshop .   
@@ -29,12 +33,13 @@ fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
 java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188273_chrX_1.fastq.gz ./samples/ERR188273_chrX_2.fastq.gz ./ERR188273_chrX_1_paired_filtered.fastq.gz ./ERR188273_chrX_1_unpaired_filtered.fastq.gz ./ERR188273_chrX_2_paired_filtered.fastq.gz ./ERR188273_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
 ```
 ### Step3. Re-analyze the quality of filtered reads with FastQC
-Confirm that this sample has enough quality to be worth studying further.
+Run fastqc again to confirm that this sample has enough quality to be worth studying further.
 ```
 fastqc --outdir ./qualitycheck/ *_chrX_*_filtered.fastq.gz
 ```
+At this point you can look at the .html file outputted by fastqc to inspect the quality control report.
 ### Step4. Alignment of RNA-seq reads to the genome with HISAT2
-HISAT2 is a fast aligner: https://ccb.jhu.edu/software/hisat2/index.shtml
+[HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) is a fast aligner.
 ```
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
 ```
