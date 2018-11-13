@@ -62,7 +62,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
         -	(cf) Our analysis only contains the genome of chromosome X, but if someone is interested in the full data sets, these files are ~25 times larger and you can find them [here](ftp://ftp.ccb.jhu.edu/pub/RNAseq_protocol)
 5. Move to your home directory and copy the workshop directory into it: 
 ```bash
-	cd 		 
+	cd ~ 		 
 	cp -R /projects/genomicsshare/RNAseq_workshop .	
 ```
 
@@ -73,7 +73,6 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
 	module load hisat2/2.0.4  
 	module load samtools/1.6 
 	module load stringtie/1.3.4 
-	* Confirm if trimmomatic is included in the copied working directory
 ```
 
 
