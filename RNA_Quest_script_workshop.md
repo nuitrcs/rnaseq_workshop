@@ -1,15 +1,15 @@
 # RNA-seq Workshop Script
+The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  You can find out more about getting an account on Quest at https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html
 
+## Running Commands on Quest
 ### Bash environment - Setup 
-
-### * It is highly enouraged to install the required packages before attending the workshop
 On your local computer, open a terminal on your local computer and connect to Quest with your netID (ssh YOUR_NETID@quest.it.northwestern.edu), then copy the workshop directory into your home directory: 
 ``` 
 cd ~                                      
 cp -R /projects/genomicsshare/RNAseq_workshop .   
 cd RNAseq_workshop                        
 ```
-### Load the necessary modules
+#### Load the necessary modules
 ```
 module load fastqc/0.11.5;
 module load hisat2/2.0.4;  
@@ -46,12 +46,13 @@ stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
 ```
 stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
 ```
-## Run the pipeline to this point on all the samples  
+## Submit a job to run the pipeline to this point on all the samples  
 This part is done on the compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  Use msub to submit the job to run the pipeline on all samples on the compute nodes:
 ```
 more RNAseq_workshop_submit.sh
 msub RNAseq_workshop_submit.sh
 ```
+## Analysis performed in RStudio
 ### VISUALIZATION 
 Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in and login with your Quest credentials.  Once RStudio has started up, type:
 ```
