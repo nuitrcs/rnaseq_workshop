@@ -39,17 +39,17 @@ fastqc --outdir ./qualitycheck/ *_chrX_*_filtered.fastq.gz
 ```
 At this point you can look at the .html file outputted by fastqc to inspect the quality control report.
 ### Step4. Alignment of RNA-seq reads to the genome with HISAT2
-[HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) is a fast aligner.
+[HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) is a fast and sensitive alignment program for mapping next-generation sequencing reads (both DNA and RNA).
 ```
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
 ```
 ### Step 5. Sort and convert the SAM file to BAM with samtools
-Samtools helps convert sam files into different formats: https://github.com/samtools/samtools
+[Samtools](https://github.com/samtools/samtools) convertx sam files into different formats, in this case a [BAM file](http://software.broadinstitute.org/software/igv/bam).
 ```
 samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
 ```
 ### Step 6. Assemble and quantify expressed genes and transcripts with StringTie
-StringTie is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts: https://ccb.jhu.edu/software/stringtie/
+[StringTie](https://ccb.jhu.edu/software/stringtie/) is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts.
 ### 6-a. Stringtie assembles transcripts for each sample:
 ```
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
@@ -58,28 +58,28 @@ stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_
 ```
 stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
 ```
-### 6-c. Stringtie estimates transcript abundances and create table counts for Ballgown:
+### 6-c. Stringtie estimates transcript abundances and create table counts for Ballgown (a program downstream in the pipeline):
 ```
 stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
 ```
 
 ## Submit a job to run the pipeline to this point on all the samples  
-This part is done on the compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  Use msub to submit the job to run the pipeline on all samples on the compute nodes:
+This part is done on Quest's compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  Use `msub` to submit the job to run the pipeline on all samples on the compute nodes:
 ```
 more RNAseq_workshop_submit.sh
 msub RNAseq_workshop_submit.sh
 ```
-## Analysis performed in RStudio
-### VISUALIZATION 
+## Analysis and Visualization performed in RStudio
 Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in and login with your Quest credentials.  Once RStudio has started up, type:
 ```
 setwd("/home/<YOUR_NETID>/RNAseq_workshop/") 
 ```
-where <YOUR_NETID> is your Quest login netID.
+where "<YOUR_NETID>" is your Quest login netID.
 
-### <Step 7. Run  differential expression analysis with Ballgown>
+### Step 7. Run  differential expression analysis with Ballgown
+[Ballgown](https://bioconductor.org/packages/release/bioc/html/ballgown.html) provides flexible, isoform-level differential expression analysis.  Ballgown is part of the Bioconductor suite of tools available as R packages.
 
-### 7-a. RStudio environment setup (takes ~ 10 mins)
+#### 7-a. RStudio environment setup (takes ~ 10 mins)
 ```
 library("devtools") 
 source("http://www.bioconductor.org/biocLite.R")
@@ -91,23 +91,23 @@ library("genefilter") # faster calculation of mean/variance
 library("dplyr") # to sort/arrange results
 library("devtools")  # reproducibility/installing packages
 ```
-### 7-b. Load phenotype data into RStudio
+#### 7-b. Load phenotype data into RStudio
 ```
 pheno_data = read.csv("phenodata.csv")
 head(pheno_data)
 ```
-### 7-c. Read in the expression data that were calculated by Stringtie in previous step 6-(c)
+#### 7-c. Read in the expression data that were calculated by Stringtie in previous step 6-(c)
 ```
 chrX <- ballgown(dataDir="ballgown", samplePattern="ERR", pData=pheno_data)
 str(chrX)
 ```
-### 7-d. Filter to remove low-abundance genes 
+#### 7-d. Filter to remove low-abundance genes 
 ```
 chrX_filtered <- subset(chrX, "rowVars(texpr(chrX)) >1", genomesubset=TRUE)
 str(chrX_filtered)
 ```
 ### Step 8. Identify transcripts/genes that show statistically significant differences with Ballgown in RStudio
-### 8-a. Identify transcripts that show statistically significant differences between groups:
+#### 8-a. Identify transcripts that show statistically significant differences between groups:
 ```
 results_transcripts <- stattest(chrX_filtered, feature="transcript", covariate="sex", adjustvars=c("condition"), getFC=TRUE, meas="FPKM")
 head(results_transcripts)
@@ -117,7 +117,7 @@ Add gene names and gene IDs to the results:
 results_transcripts <- data.frame(geneNames=ballgown::geneNames(chrX_filtered), geneIDs=ballgown::geneIDs(chrX_filtered), results_transcripts)
 head(results_transcripts)
 ```
-### 8-b. Identify genes that show statistically significant differences between groups 
+#### 8-b. Identify genes that show statistically significant differences between groups 
 ```
 results_genes <- stattest(chrX_filtered, feature="gene", covariate="sex", adjustvars=c("condition"), getFC=TRUE, meas="FPKM")
 head(results_genes)
@@ -141,26 +141,26 @@ write.csv(results_genes, file="DifferentialExpressionAnalysis_gene_results.csv",
 save.image()			# your workspace will be saved as '.RData' in current working directory
 ```
 ### Step 10. Visualization in RStudio
-### 10-a. Plot for distribution of gene abundances across samples:
+#### 10-a. Plot for distribution of gene abundances across samples:
 ```
 fpkm <- texpr(chrX, meas='FPKM')
 fpkm <- log2(fpkm +1)
 boxplot(fpkm, col=as.numeric(pheno_data$sex), las=2,ylab='log2(FPKM+1)')
 ```
-### 10-b. Plot for individual expression of a certain transcript between groups: 
-### Setup palette with your favorite colors
+#### 10-b. Plot for individual expression of a certain transcript between groups: 
+Setup palette with your favorite colors
 ```
 coloring <- c('darkgreen', 'skyblue', 'hotpink', 'orange', 'lightyellow')
 palette(coloring)
 ```
-### In this example, by looking head(results_transcripts), I randomly choose to draw the 13th most differientially expressed transcript. (gene name "XIST") You can also decide the transcript/gene of your interest. What you need to know is its genename or transcript name! 
+#### In this example, by looking head(results_transcripts), I randomly choose to draw the 13th most differientially expressed transcript. (gene name "XIST") You can also decide the transcript/gene of your interest. What you need to know is its genename or transcript name! 
 ```
 which(ballgown::geneNames(chrX)=="XIST")	# 1484
 ballgown::transcriptNames(chrX)[1484]		# NR_001564
 plot(fpkm[1484,] ~ pheno_data$sex, border=c(1,2), main=paste(ballgown::geneNames(chrX)[1484], ' : ',ballgown::transcriptNames(chrX)[1484]), pch=19, xlab="sex", ylab='log2(FPKM+1)')
 points(fpkm[1484,] ~ jitter(as.numeric(pheno_data$sex)), col=as.numeric(pheno_data$sex))
 ```
-### 10-c/d. Plot the average expression levels for all transcripts of a gene within different groups:
+#### 10-c/d. Plot the average expression levels for all transcripts of a gene within different groups:
 ```
 geneIDs(chrX)[1484] # MSTRG.495
 plotMeans('MSTRG.495', chrX_filtered, groupvar="sex", legend=FALSE)
