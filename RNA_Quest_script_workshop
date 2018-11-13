@@ -19,41 +19,28 @@ fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
 
 ### <Step4. Alignment of RNA-seq reads to the genome with HISAT>
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
-hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188104_chrX_1.fastq.gz -2 ./ERR188104_chrX_2.fastq.gz -S ERR188104_chrX.sam
-hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188234_chrX_1.fastq.gz -2 ./ERR188234_chrX_2.fastq.gz -S ERR188234_chrX.sam
-hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188273_chrX_1.fastq.gz -2 ./ERR188273_chrX_2.fastq.gz -S ERR188273_chrX.sam
-hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188454_chrX_1.fastq.gz -2 ./ERR188454_chrX_2.fastq.gz -S ERR188454_chrX.sam
-hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR204916_chrX_1.fastq.gz -2 ./ERR204916_chrX_2.fastq.gz -S ERR204916_chrX.sam
+
 
 ### <Step 5. Sort and convert the SAM file to BAM with samtools>
 samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
-samtools sort -@ 1 -o ERR188104_chrX.bam ERR188104_chrX.sam
-samtools sort -@ 1 -o ERR188234_chrX.bam ERR188234_chrX.sam
-samtools sort -@ 1 -o ERR188273_chrX.bam ERR188273_chrX.sam
-samtools sort -@ 1 -o ERR188454_chrX.bam ERR188454_chrX.sam
-samtools sort -@ 1 -o ERR204916_chrX.bam ERR204916_chrX.sam
+
 
 ### <Step 6. Assemble and quantify expressed genes and transcripts with StringTie>
 ### 6-a. Stringtie assembles transcripts for each sample:
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
-stringtie -p 1 -G ./genes/chrX.gtf -o ERR188104_chrX.gtf -l ERR188104 ERR188104_chrX.bam
-stringtie -p 1 -G ./genes/chrX.gtf -o ERR188234_chrX.gtf -l ERR188234 ERR188234_chrX.bam
-stringtie -p 1 -G ./genes/chrX.gtf -o ERR188273_chrX.gtf -l ERR188273 ERR188273_chrX.bam
-stringtie -p 1 -G ./genes/chrX.gtf -o ERR188454_chrX.gtf -l ERR188454 ERR188454_chrX.bam
-stringtie -p 1 -G ./genes/chrX.gtf -o ERR204916_chrX.gtf -l ERR204916 ERR204916_chrX.bam
+
 
 ### 6-b. Stringtie merges transcripts from all samples:
 stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
 
 ### 6-c. Stringtie estimates transcript abundances and create table counts for Ballgown:
 stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
-stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188104/ERR188104_chrX.gtf ERR188104_chrX.bam
-stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188234/ERR188234_chrX.gtf ERR188234_chrX.bam
-stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188273/ERR188273_chrX.gtf ERR188273_chrX.bam
-stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188454/ERR188454_chrX.gtf ERR188454_chrX.bam
-stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR204916/ERR204916_chrX.gtf ERR204916_chrX.bam
 
-### Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in
+### INTERMISSION - examine the submission script and run pipeline on all samples on the compute nodes:
+more RNAseq_workshop_submit.sh
+msub RNAseq_workshop_submit.sh
+
+### VISUALIZATioN - Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in
 
 setwd("/home/<YOUR_NETID>/RNAseq_workshop/") 
 
