@@ -1,4 +1,4 @@
-# Bash environment - Setup 
+### Bash environment - Setup 
 ### * It is highly enouraged to install the required packages before attending the workshop
 
 ssh YOUR_NETID@quest.it.northwestern.edu  ### On your local computer, open a terminal and connect to Quest with your netID
