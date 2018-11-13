@@ -138,8 +138,9 @@ Save the analysis results to csv files:
 ```
 write.csv(results_transcripts, file="DifferentialExpressionAnalysis_transcript_results.csv", row.names=FALSE)
 write.csv(results_genes, file="DifferentialExpressionAnalysis_gene_results.csv", row.names=FALSE)
-save.image()			# your workspace will be saved as '.RData' in current working directory
+save.image()			
 ```
+Your workspace will be saved as '.RData' in current working directory.
 ### Step 10. Visualization in RStudio
 #### 10-a. Plot for distribution of gene abundances across samples:
 ```
@@ -155,14 +156,14 @@ palette(coloring)
 ```
 #### In this example, by looking head(results_transcripts), I randomly choose to draw the 13th most differientially expressed transcript. (gene name "XIST") You can also decide the transcript/gene of your interest. What you need to know is its genename or transcript name! 
 ```
-which(ballgown::geneNames(chrX)=="XIST")	# 1484
-ballgown::transcriptNames(chrX)[1484]		# NR_001564
+which(ballgown::geneNames(chrX)=="XIST")	
+ballgown::transcriptNames(chrX)[1484]		
 plot(fpkm[1484,] ~ pheno_data$sex, border=c(1,2), main=paste(ballgown::geneNames(chrX)[1484], ' : ',ballgown::transcriptNames(chrX)[1484]), pch=19, xlab="sex", ylab='log2(FPKM+1)')
 points(fpkm[1484,] ~ jitter(as.numeric(pheno_data$sex)), col=as.numeric(pheno_data$sex))
 ```
 #### 10-c/d. Plot the average expression levels for all transcripts of a gene within different groups:
 ```
-geneIDs(chrX)[1484] # MSTRG.495
+geneIDs(chrX)[1484] 
 plotMeans('MSTRG.495', chrX_filtered, groupvar="sex", legend=FALSE)
 plotMeans(ballgown::geneIDs(chrX)[1484], chrX, groupvar="sex", legend=FALSE)
 ```
