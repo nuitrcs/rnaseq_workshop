@@ -1,9 +1,8 @@
 # Bash environment - Setup 
 
 ### * It is highly enouraged to install the required packages before attending the workshop
-On your local computer, open a terminal and connect to Quest with your netID, then copy the workshop directory into your home directory: 
-```
-ssh YOUR_NETID@quest.it.northwestern.edu  
+On your local computer, open a terminal on your local computer and connect to Quest with your netID (ssh YOUR_NETID@quest.it.northwestern.edu), then copy the workshop directory into your home directory: 
+``` 
 cd ~                                      
 cp -R /projects/genomicsshare/RNAseq_workshop .   
 cd RNAseq_workshop                        
