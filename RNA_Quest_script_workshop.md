@@ -64,9 +64,13 @@ stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_c
 ```
 
 ## Submit a job to run the pipeline to this point on all the samples  
-This part is done on Quest's compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  Use `msub` to submit the job to run the pipeline on all samples on the compute nodes:
+This part is done on Quest's compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  
 ```
 more RNAseq_workshop_submit.sh
+```
+Notice the default allocation for RNAseq_workshop_submit.sh is b1042, the Genomic Compute Cluster on Quest.  If you are not a member of b1042, edit RNAseq_workshop_submit.sh to change the line `#MSUB -A b1042` to an allocation that you are in.  All Northwestern community members who perform genomics research are invited to apply to join the [Genomic Compute Cluster](https://www.it.northwestern.edu/research/user-services/quest/genomics.html) for unlimited and free access to compute hours for genomics research.
+Use `msub` to submit the job to run the pipeline on all samples on the compute nodes:
+```
 msub RNAseq_workshop_submit.sh
 ```
 ## Analysis and Visualization performed in RStudio
