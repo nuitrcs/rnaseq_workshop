@@ -1,19 +1,21 @@
 # Bash environment - Setup 
 
 ### * It is highly enouraged to install the required packages before attending the workshop
-
+```
 ssh YOUR_NETID@quest.it.northwestern.edu  ### On your local computer, open a terminal and connect to Quest with your netID
 cd ~                                      ### Begin in your home directory
 cp -R /projects/genomicsshare/RNAseq_workshop .   
 cd RNAseq_workshop                        
-
-### Load the necessary modules 
+```
+### Load the necessary modules
+```
 module load fastqc/0.11.5;
 module load hisat2/2.0.4;  
 module load samtools/1.6; 
 module load stringtie/1.3.4; 
-
-### <Step1. Analyze raw reads’ quality with FastQC>  ### STEPS 1 - 3 DEMO ONLY due to time constraints
+```
+# <Step1. Analyze raw reads’ quality with FastQC>  
+### STEPS 1 - 3 DEMO ONLY due to time constraints
 ### Bash environment 						
 --->requires the first steps output in the sample directory
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz 	 
