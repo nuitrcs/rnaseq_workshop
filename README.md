@@ -68,7 +68,7 @@ If you would like to perform RNA-seq on Quest, you need to first do the followin
 
 #### Software setup/installation:
 6. Load the necessary modules on Quest: fastqc, samtools, HISAT2
-```bash
+```
 	module load fastqc/0.11.5
 	module load hisat2/2.0.4  
 	module load samtools/1.6 
@@ -93,7 +93,7 @@ ___
 	mkdir qualitycheck
 	fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz
 ```
-
+One of the output files for FastQC can be viewed [here](http://htmlpreview.github.com/?
 #### Step2. Filter raw reads with Trimmomatic
 ###### Input: fastQ file before filtering	:heavy_minus_sign:	Output: fastQ file after filtering
 -	Even if our data looks fine, it is always a good idea to filter out low/poor quality reads. 
