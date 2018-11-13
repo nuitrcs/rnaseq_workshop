@@ -1,5 +1,5 @@
 # RNA-seq Workshop Script
-The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  Information on applying for an account on Quest can be found here: https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html
+The first half of this workshop involves commands typed into the command line on Quest.  The second half is done in RStudio, on the Quest Analytics nodes.  This workshop requires that you have an account on Quest.  Information on applying for an account on Quest can be found [here](https://www.it.northwestern.edu/research/user-services/quest/allocation-guidelines.html)
 
 ## Running Commands on Quest
 ### Bash environment - Setup 
@@ -10,7 +10,7 @@ cp -R /projects/genomicsshare/RNAseq_workshop .
 cd RNAseq_workshop                        
 ```
 #### Load the necessary modules
-Software on Quest can either be installed locally or loaded from system-wide modules: https://kb.northwestern.edu/page.php?id=70718
+Software on Quest can either be installed locally or loaded from [system-wide modules](https://kb.northwestern.edu/page.php?id=70718).
 ```
 module load fastqc/0.11.5;
 module load hisat2/2.0.4;  
@@ -18,13 +18,13 @@ module load samtools/1.6;
 module load stringtie/1.3.4; 
 ```
 ### Step1. Analyze raw reads’ quality with FastQC  
-FastQC is a quality control tool which provides a report on the quality of your samples: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/  
+[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) is a quality control tool which provides a report on the quality of your samples.
 From the command line on Quest:						
 ```
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz 	 
 ```
 ### Step2. Filtering raw reads with Trimmomatic
-Trimmomatic is a flexible read trimming tool for Illumina NGS data: http://www.usadellab.org/cms/index.php?page=trimmomatic
+[Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) is a flexible read trimming tool for Illumina NGS data.
 ```
 java -jar trimmomatic-0.33.jar PE -threads 1 -phred33 ./samples/ERR188273_chrX_1.fastq.gz ./samples/ERR188273_chrX_2.fastq.gz ./ERR188273_chrX_1_paired_filtered.fastq.gz ./ERR188273_chrX_1_unpaired_filtered.fastq.gz ./ERR188273_chrX_2_paired_filtered.fastq.gz ./ERR188273_chrX_2_unpaired_filtered.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:70:20 MINLEN:30; 
 ```
