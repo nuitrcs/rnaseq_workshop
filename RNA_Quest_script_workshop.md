@@ -16,23 +16,23 @@ module load hisat2/2.0.4;
 module load samtools/1.6; 
 module load stringtie/1.3.4; 
 ```
-# Step1. Analyze raw reads’ quality with FastQC  
+### Step1. Analyze raw reads’ quality with FastQC  
 ### STEPS 1 - 3 DEMO ONLY due to time constraints
-### Bash environment 						
+#### Bash environment 						
 ```
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz 	 
 ```
-### <Step4. Alignment of RNA-seq reads to the genome with HISAT>
+### Step4. Alignment of RNA-seq reads to the genome with HISAT
 ```
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
 ```
 
-### <Step 5. Sort and convert the SAM file to BAM with samtools>
+### Step 5. Sort and convert the SAM file to BAM with samtools
 ```
 samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
 ```
 
-### <Step 6. Assemble and quantify expressed genes and transcripts with StringTie>
+### Step 6. Assemble and quantify expressed genes and transcripts with StringTie
 ### 6-a. Stringtie assembles transcripts for each sample:
 ```
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
