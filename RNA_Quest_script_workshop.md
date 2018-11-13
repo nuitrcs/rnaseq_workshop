@@ -1,7 +1,7 @@
 # Bash environment - Setup 
 
 ### * It is highly enouraged to install the required packages before attending the workshop
-On your local computer, open a terminal and connect to Quest with your netID, then copy the workshop directory into your home directory.  
+On your local computer, open a terminal and connect to Quest with your netID, then copy the workshop directory into your home directory: 
 ```
 ssh YOUR_NETID@quest.it.northwestern.edu  
 cd ~                                      
@@ -18,32 +18,39 @@ module load stringtie/1.3.4;
 # Step1. Analyze raw reads’ quality with FastQC  
 ### STEPS 1 - 3 DEMO ONLY due to time constraints
 ### Bash environment 						
---->requires the first steps output in the sample directory
+```
 fastqc --outdir ./qualitycheck/ ./samples/*_chrX_*.fastq.gz 	 
-
+```
 ### <Step4. Alignment of RNA-seq reads to the genome with HISAT>
+```
 hisat2 -p 1 --dta -x ./indexes/chrX_tran -1 ./ERR188044_chrX_1.fastq.gz -2 ./ERR188044_chrX_2.fastq.gz -S ERR188044_chrX.sam
-
+```
 
 ### <Step 5. Sort and convert the SAM file to BAM with samtools>
+```
 samtools sort -@ 1 -o ERR188044_chrX.bam ERR188044_chrX.sam
-
+```
 
 ### <Step 6. Assemble and quantify expressed genes and transcripts with StringTie>
 ### 6-a. Stringtie assembles transcripts for each sample:
+```
 stringtie -p 1 -G ./genes/chrX.gtf -o ERR188044_chrX.gtf -l ERR188044 ERR188044_chrX.bam
-
+```
 
 ### 6-b. Stringtie merges transcripts from all samples:
+```
 stringtie --merge -p 1 -G ./genes/chrX.gtf -o stringtie_merged.gtf mergelist.txt
-
+```
 ### 6-c. Stringtie estimates transcript abundances and create table counts for Ballgown:
+```
 stringtie -e -B -p 1 -G stringtie_merged.gtf -o ./ballgown/ERR188044/ERR188044_chrX.gtf ERR188044_chrX.bam
-
-### INTERMISSION - examine the submission script and run pipeline on all samples on the compute nodes:
+```
+## Run the pipeline to this point on all the samples  
+This part is done on the compute nodes, where we can request multiple cores to run more threads.  Start by looking at the submission script to see how the commands we've run so far can be run on the compute nodes.  Use msub to submit the job to run the pipeline on all samples on the compute nodes:
+```
 more RNAseq_workshop_submit.sh
 msub RNAseq_workshop_submit.sh
-
+```
 ### VISUALIZATioN - Go to: https://rstudio.questanalytics.northwestern.edu/auth-sign-in
 
 setwd("/home/<YOUR_NETID>/RNAseq_workshop/") 
